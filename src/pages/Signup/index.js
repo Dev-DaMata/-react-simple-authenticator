@@ -15,13 +15,34 @@ const Signup = () => {
   const { signup } = useAuth();
 
   const handleSignup = () =>{
+    let emailValidation = /^([a-z]){1,}([a-z0-9._-]){1,}([@]){1}([a-z]){2,}([.]){1}([a-z]){2,}([.]?){1}([a-z]?){2,}$/i;
+    let pwdValidation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])(?:([0-9a-zA-Z$*&@#])(?!\1)){8,}$/;
+
     if(!email | !emailConf | !senha){
       setError("Preencha todos oscampos");
       return;
     }else if (email !== emailConf) {
       setError("Os e-mails não são iguais")
       return;
-    } 
+    }else if(emailValidation.test(email) == false){
+      setError("E-mail inválido!")
+      return;
+    }else if (pwdValidation.test(senha) == false){
+      setError(
+        <>
+          Senha inválida! <br />
+          . A senha deve conter ao menos um dígito, <br />
+          . deve conter ao menos 8 dos caracteres mencionados <br />
+          . Deve conter ao menos uma letra minúscula, <br />
+          . Deve conter ao menos uma letra maiúscula, <br />
+          . Deve conter ao menos um caractere especial
+        </>
+      );
+      
+      return;
+    }
+
+
 
     const res = signup(email, senha);
 
